@@ -33,6 +33,7 @@ public class AccountController {
 
 
     @GetMapping("/users")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<Account>> getAll(){
         try{
             List<Account> list = accountService.getAllAccount();
@@ -46,6 +47,7 @@ public class AccountController {
     }
 
     @GetMapping("/email/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> getemail(@PathVariable int id){
         try{
             String email = accountService.getEmailbyId(id);
