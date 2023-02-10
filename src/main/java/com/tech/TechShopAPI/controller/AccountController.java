@@ -5,11 +5,15 @@ import com.tech.TechShopAPI.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @RestController
@@ -25,15 +29,17 @@ public class AccountController {
         return "Hello, "+ principal.getName();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/admin")
-    public String admin() {
-        return "Hello, Admin!";
+    public String admin(Authentication authentication) {
+        Collection<? extends GrantedAuthority> au = authentication.getAuthorities();
+        GrantedAuthority a = au.stream().iterator().next();
+        return "Hello, Admin!" ;
     }
 
 
     @GetMapping("/users")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PostAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Account>> getAll(){
         try{
             List<Account> list = accountService.getAllAccount();
@@ -47,7 +53,6 @@ public class AccountController {
     }
 
     @GetMapping("/email/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<String> getemail(@PathVariable int id){
         try{
             String email = accountService.getEmailbyId(id);

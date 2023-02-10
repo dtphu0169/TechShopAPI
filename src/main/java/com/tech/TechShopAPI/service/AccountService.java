@@ -10,4 +10,6 @@ public interface AccountService {
     List<Account> getAllAccount();
 
     String getEmailbyId(int id);
+
+    boolean isEmailhasAccount(String email);
 }

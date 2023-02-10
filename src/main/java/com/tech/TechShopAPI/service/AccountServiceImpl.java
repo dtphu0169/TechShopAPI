@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class AccountServiceImpl implements AccountService {
@@ -25,6 +26,14 @@ public class AccountServiceImpl implements AccountService {
         return accountRepository.getEmailbyId(id);
     }
 
+    @Override
+    public boolean isEmailhasAccount(String email) {
+        Optional<Account> account = accountRepository.getbyEmail(email);
+        if (account.isEmpty()){
+            return false;
+        }
+        return true;
+    }
 
 
 }

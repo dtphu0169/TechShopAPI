@@ -23,7 +23,7 @@ create table address(
     constraint fk_add foreign key(account_id)references account(id)
 );
 
-create table Category(
+create table category(
 	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name nvarchar(225) not null,
 	image_path nvarchar(225) not null

@@ -6,8 +6,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class AccountSecurity implements UserDetails {
+
     private final Account account;
 
     public AccountSecurity(Account account){
@@ -16,11 +18,7 @@ public class AccountSecurity implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(account
-                        .getRole()
-                        .split(","))
-                .map(SimpleGrantedAuthority::new)
-                .toList();
+        return List.of(new SimpleGrantedAuthority(account.getRole()));
     }
 
     @Override
@@ -30,7 +28,7 @@ public class AccountSecurity implements UserDetails {
 
     @Override
     public String getUsername() {
-        return account.getUserName();
+        return account.getEmail();
     }
 
     @Override
@@ -50,7 +48,7 @@ public class AccountSecurity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return account.isActive();
+        return true;
     }
 
     public Account getAccount() {
