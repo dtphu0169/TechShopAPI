@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,5 +27,7 @@ public class Account {
     private String password;
     private Date registerDate;
 
-
+//    @OneToMany(targetEntity = Bill.class,cascade = CascadeType.ALL)
+//    @JoinColumn(name = "accountId",referencedColumnName = "id")
+//    private List<Bill> bills;
 }

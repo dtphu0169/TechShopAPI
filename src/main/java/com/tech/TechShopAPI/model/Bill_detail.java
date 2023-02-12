@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Getter
 @Setter
@@ -22,8 +19,14 @@ public class Bill_detail {
     @Id
     @org.springframework.data.annotation.Id
     private int id;
-    private int bill_id;
-    private int product_id;
+
+    @ManyToOne(targetEntity = Bill.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "bill_id",referencedColumnName = "id")
+    private Bill bill;
+
+    @ManyToOne(targetEntity = Product.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_id",referencedColumnName = "id")
+    private Product product;
     private int quantity;
     private int unit_price;
 }

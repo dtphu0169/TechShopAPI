@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,7 +23,9 @@ public class Bill {
     @org.springframework.data.annotation.Id
     private int id;
 
-    private String customerName;
+    @ManyToOne(targetEntity = Account.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "accountId",referencedColumnName = "id")
+    private Account account;
     private Date datecreate;
     private int price;
     private int shipprice;
@@ -31,4 +34,8 @@ public class Bill {
     private boolean paid;
     private String status;
     private String note;
+
+//    @OneToMany(targetEntity = Bill_detail.class,cascade = CascadeType.ALL)
+//    @JoinColumn(name = "billId",referencedColumnName = "id")
+//    private List<Bill_detail> billDetails;
 }

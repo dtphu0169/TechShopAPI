@@ -77,10 +77,10 @@ INSERT INTO `techshopdb`.`feedback`
 
 -- bill
 INSERT INTO `techshopdb`.`bill`
-(`id`,`customer_name`,`datecreate`,`price`,`shipprice`,`address`,`phone`,`paid`,`status`,`note`) VALUES
-(1001,'nam','2022-12-15',14200000,50000,'Phường linh đông,thủ đức,TP HCM','0123458468',1,'đang đóng gói',
+(`id`,`account_id`,`datecreate`,`price`,`shipprice`,`address`,`phone`,`paid`,`status`,`note`) VALUES
+(1001,12,'2022-12-15',14200000,50000,'Phường linh đông,thủ đức,TP HCM','0123458468',1,'đang đóng gói',
 ''),
-(1002,'phú','2022-12-18',79200000,70000,'Phường linh trung,thủ đức,TP HCM','484315184',0,'đã nhận',
+(1002,15,'2022-12-18',79200000,70000,'Phường linh trung,thủ đức,TP HCM','484315184',0,'đã nhận',
 'gửi vào buổi trưa');
 
 -- bill_detail

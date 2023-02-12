@@ -23,12 +23,12 @@ create table address(
     constraint fk_add foreign key(account_id)references account(id)
 );
 
-create table category(
+create table Category(
 	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name nvarchar(225) not null,
 	image_path nvarchar(225) not null
 );
-   
+
 create table label(
 	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	name nvarchar(225) not null,
@@ -54,7 +54,7 @@ create table image(
 	url nvarchar(225) null,
     constraint fk_img foreign key(product_id)references product(id)
 	);
- 
+
  create table cartproduct(
 	id int UNSIGNED AUTO_INCREMENT PRIMARY KEY,
 	account_id int UNSIGNED not null,
@@ -76,7 +76,7 @@ create table feedback(
 
 create table bill(
 	id int  UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-	customer_name nvarchar(225) not null,
+	account_id int UNSIGNED not null,
 	datecreate datetime not null,
 	price int not null,
 	shipprice int not null,
@@ -84,7 +84,8 @@ create table bill(
 	phone bigint not null,
 	paid bool not null,
 	status nvarchar(225) not null,
-	note nvarchar(1000) null
+	note nvarchar(1000) null,
+    constraint fk_bi foreign key(account_id)references account(id)
 );
 
 create table bill_detail(
