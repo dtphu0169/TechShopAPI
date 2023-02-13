@@ -84,9 +84,10 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions().sameOrigin())
                 .httpBasic(Customizer.withDefaults());
 
-//        http.oauth2ResourceServer()
-//                .jwt()
-//                .jwtAuthenticationConverter(new JwtAuthenticationConverter()
+        http.oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthenticationConverter());
+//                        new JwtAuthenticationConverter()
 //                {
 //                    @Override
 //                    protected Collection<GrantedAuthority> extractAuthorities(final Jwt jwt)
@@ -107,6 +108,16 @@ public class SecurityConfig {
         return http.build();
     }
 
+
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        // create a custom JWT converter to map the "roles" from the token as granted authorities
+        JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
+        jwtGrantedAuthoritiesConverter.setAuthoritiesClaimName("roles");
+        jwtGrantedAuthoritiesConverter.setAuthorityPrefix("ROLE_");
+        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
+        return jwtAuthenticationConverter;
+    }
 
     @Bean
     JwtDecoder jwtDecoder(){

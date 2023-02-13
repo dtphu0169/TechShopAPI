@@ -2,6 +2,7 @@ package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.payload.request.OrderRequest;
 import com.tech.TechShopAPI.payload.response.OrderResponse;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -13,5 +14,9 @@ public interface OrderService {
 
     List<OrderResponse> getHistory(Principal principal);
 
-    OrderResponse getById(int id, Principal principal);
+    OrderResponse getById(int id, Principal principal) throws AuthenticationException;
+
+    List<OrderResponse> getALL(Principal principal) throws AuthenticationException;
+
+    void editOrder(int id, String status);
 }

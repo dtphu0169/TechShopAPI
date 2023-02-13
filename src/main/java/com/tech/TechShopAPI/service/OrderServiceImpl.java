@@ -12,6 +12,7 @@ import com.tech.TechShopAPI.repository.AccountRepository;
 import com.tech.TechShopAPI.repository.BillRepository;
 import com.tech.TechShopAPI.repository.Bill_detailRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,36 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     ProductRepository productRepository;
 
+    private  List<OrderResponse> changebilltoResponse(List<Bill> bills){
+        List<OrderResponse> result = new ArrayList<>();
+        for(Bill bill : bills){
+            OrderResponse response = new OrderResponse();
+            response.setId(bill.getId());
+            response.setCustomerName(bill.getAccount().getUserName());
+            response.setDatecreate(bill.getDatecreate());
+            response.setPrice(bill.getPrice());
+            response.setShipprice(bill.getShipprice());
+            response.setAddress(bill.getAddress());
+            response.setPhone(bill.getPhone());
+            response.setPaid(bill.isPaid());
+            response.setStatus(bill.getStatus());
+            response.setNote(bill.getNote());
+
+            List<Bill_detail> billDetails = bill_detailRepository.findByBillId(bill.getId());
+            List<OrderDetailResponse> detailResponses = new ArrayList<>();
+            for (Bill_detail bd : billDetails){
+                OrderDetailResponse detailResponse = new OrderDetailResponse();
+                detailResponse.setQuantity(bd.getQuantity());
+                detailResponse.setProductName(bd.getProduct().getName());
+                detailResponse.setUnit_price(bd.getProduct().getPrice());
+                detailResponses.add(detailResponse);
+            }
+            response.setBillDetails(detailResponses);
+            result.add(response);
+        }
+
+        return result;
+    }
 
     @Override
     public void createOrder(@RequestBody OrderRequest orderRequest, Principal principal) {
@@ -104,42 +135,58 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderResponse getById(int id, Principal principal) {
-        try{
-            Account account = accountRepository.getbyEmail(principal.getName()).get();
-            Bill bill = billRepository.findById(id).get();
+    public OrderResponse getById(int id, Principal principal) throws AuthenticationException {
 
-            if (!(account.getRole().equals("ROLE_ADMIN") || bill.getAccount().getId() == account.getId())){
-                return null;
-            }
+        Account account = accountRepository.getbyEmail(principal.getName()).get();
+        Bill bill = billRepository.findById(id).get();
 
-            OrderResponse response = new OrderResponse();
-            response.setId(bill.getId());
-            response.setCustomerName(bill.getAccount().getUserName());
-            response.setDatecreate(bill.getDatecreate());
-            response.setPrice(bill.getPrice());
-            response.setShipprice(bill.getShipprice());
-            response.setAddress(bill.getAddress());
-            response.setPhone(bill.getPhone());
-            response.setPaid(bill.isPaid());
-            response.setStatus(bill.getStatus());
-            response.setNote(bill.getNote());
-
-            List<Bill_detail> billDetails = bill_detailRepository.findByBillId(bill.getId());
-            List<OrderDetailResponse> detailResponses = new ArrayList<>();
-            for (Bill_detail bd : billDetails){
-                OrderDetailResponse detailResponse = new OrderDetailResponse();
-                detailResponse.setQuantity(bd.getQuantity());
-                detailResponse.setProductName(bd.getProduct().getName());
-                detailResponse.setUnit_price(bd.getProduct().getPrice());
-                detailResponses.add(detailResponse);
-            }
-            response.setBillDetails(detailResponses);
-
-            return response;
-        } catch (Exception e){
-            return null;
+        if (!(account.getRole().equals("ROLE_ADMIN") || bill.getAccount().getId() == account.getId())){
+            throw new AuthenticationException("You do not have access");
         }
 
+        OrderResponse response = new OrderResponse();
+        response.setId(bill.getId());
+        response.setCustomerName(bill.getAccount().getUserName());
+        response.setDatecreate(bill.getDatecreate());
+        response.setPrice(bill.getPrice());
+        response.setShipprice(bill.getShipprice());
+        response.setAddress(bill.getAddress());
+        response.setPhone(bill.getPhone());
+        response.setPaid(bill.isPaid());
+        response.setStatus(bill.getStatus());
+        response.setNote(bill.getNote());
+
+        List<Bill_detail> billDetails = bill_detailRepository.findByBillId(bill.getId());
+        List<OrderDetailResponse> detailResponses = new ArrayList<>();
+        for (Bill_detail bd : billDetails){
+            OrderDetailResponse detailResponse = new OrderDetailResponse();
+            detailResponse.setQuantity(bd.getQuantity());
+            detailResponse.setProductName(bd.getProduct().getName());
+            detailResponse.setUnit_price(bd.getProduct().getPrice());
+            detailResponses.add(detailResponse);
+        }
+        response.setBillDetails(detailResponses);
+
+        return response;
+
+    }
+
+    @Override
+    public List<OrderResponse> getALL(Principal principal) throws AuthenticationException {
+        Account account = accountRepository.getbyEmail(principal.getName()).get();
+//        if(!account.getRole().equals("ROLE_ADMIN")){
+//            throw new AuthenticationException("You do not have access");
+//        }
+
+        List<Bill> bills = billRepository.findAll();
+        List<OrderResponse> result = changebilltoResponse(bills);
+        return result;
+    }
+
+    @Override
+    public void editOrder(int id, String status) {
+        Bill bill = billRepository.findById(id).get();
+        bill.setStatus(status);
+        billRepository.save(bill);
     }
 }

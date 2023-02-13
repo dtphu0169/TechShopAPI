@@ -40,8 +40,8 @@ public class AccountController {
 
 
     @GetMapping("/users")
-    @PostAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Account>> getAll(){
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<List<Account>> getAll(Principal principal){
         try{
             List<Account> list = accountService.getAllAccount();
             if (list.isEmpty()){

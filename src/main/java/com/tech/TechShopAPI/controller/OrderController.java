@@ -12,9 +12,12 @@ import com.tech.TechShopAPI.repository.CartproductRepository;
 import com.tech.TechShopAPI.repository.CategoryRepository;
 import com.tech.TechShopAPI.service.CartproductService;
 import com.tech.TechShopAPI.service.OrderService;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -83,10 +86,41 @@ public class OrderController {
 
     @GetMapping("/detail/{id}")
     public ResponseEntity<?> getDetails(@PathVariable int id,Principal principal){
-        OrderResponse response = orderService.getById(id,principal);
-        if (response == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        OrderResponse response = null;
+        try {
+            response = orderService.getById(id,principal);
+            if (response == null){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<OrderResponse>(response,HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        } catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<OrderResponse>(response,HttpStatus.OK);
+
     }
+
+    //admin
+    @GetMapping("/orders")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> getAllOrder(Principal principal){
+        try {
+            List<OrderResponse> response = orderService.getALL(principal);
+            if (response.isEmpty()){
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<List<OrderResponse>>(response,HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
+
+    @PutMapping("/{id}/{status}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> editOrder(@PathVariable int id,@PathVariable String status){
+        orderService.editOrder(id,status);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
