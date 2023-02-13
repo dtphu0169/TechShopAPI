@@ -1,5 +1,6 @@
 package com.tech.TechShopAPI.controller;
 
+import com.tech.TechShopAPI.dto.AccountDto;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.service.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,8 +66,16 @@ public class AccountController {
         }
     }
 
+    @GetMapping()
+    public ResponseEntity<AccountDto> getInfo(Principal principal){
+        return new ResponseEntity<AccountDto>(accountService.getInfo(principal),HttpStatus.OK) ;
+    }
 
-//    List<Account> accounts = new ArrayList<>();
+    @PutMapping("/changepassword")
+    public ResponseEntity<?> changepassword(Principal principal,@RequestBody String password ){
+        accountService.changepassword(principal,password);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 //
 //    @GetMapping("/getAll")
 //    List<Account> getAccounts(){

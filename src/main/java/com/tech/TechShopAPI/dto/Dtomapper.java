@@ -1,5 +1,6 @@
 package com.tech.TechShopAPI.dto;
 
+import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.model.Cartproduct;
 import com.tech.TechShopAPI.model.Category;
 
@@ -16,6 +17,18 @@ public class Dtomapper {
         CartproductDto result = new CartproductDto();
         result.setProductId(cartproduct.getProduct().getId());
         result.setQuantity(cartproduct.getQuantity());
+        return result;
+    }
+
+    public static AccountDto mapAccount(Account account){
+        AccountDto result = new AccountDto();
+        result.setId(account.getId());
+        result.setActive(account.isActive());
+        result.setEmail(account.getEmail());
+        result.setPhone(account.getPhone());
+        result.setRole(account.getRole());
+        result.setRegisterDate(account.getRegisterDate());
+        result.setUserName(account.getUserName());
         return result;
     }
 }
