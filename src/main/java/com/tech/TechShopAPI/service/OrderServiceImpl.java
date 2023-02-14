@@ -14,9 +14,11 @@ import com.tech.TechShopAPI.repository.Bill_detailRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.security.InvalidParameterException;
 import java.security.Principal;
 import java.sql.Date;
 import java.util.ArrayList;
@@ -65,7 +67,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void createOrder(@RequestBody OrderRequest orderRequest, Principal principal) {
+    public void createOrder(@RequestBody OrderRequest orderRequest, Principal principal)throws InvalidParameterException {
         Account account = accountRepository.getbyEmail(principal.getName()).get();
         java.sql.Date now = new Date(System.currentTimeMillis());
         List<CartproductDto> details = orderRequest.getDetails();
@@ -73,6 +75,10 @@ public class OrderServiceImpl implements OrderService{
 
         for (CartproductDto dto: details) {
             Product product = productRepository.findById(dto.getProductId()).get();
+            if (!product.isActive() || product.getQuantity() <= 0){
+                throw new InvalidParameterException();
+            }
+
             Bill_detail billDetail = new Bill_detail();
             billDetail.setProduct(product);
             billDetail.setUnit_price(product.getPrice());

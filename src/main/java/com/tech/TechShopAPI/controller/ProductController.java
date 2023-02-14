@@ -9,14 +9,13 @@ import com.tech.TechShopAPI.repository.LabelRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
 import com.tech.TechShopAPI.service.CategoryService;
 import com.tech.TechShopAPI.service.CategoryServiceImpl;
+import com.tech.TechShopAPI.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +25,8 @@ import java.util.Optional;
 public class ProductController {
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductService productService;
 
     @Autowired
     LabelRepository labelRepository;
@@ -43,6 +44,10 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getAllProduct(){
         return new ResponseEntity<List<Product>>(productRepository.findAll(), HttpStatus.OK);
+    }
+    @GetMapping("/available_products")
+    public ResponseEntity<List<Product>> getAvailableProduct(){
+        return new ResponseEntity<List<Product>>(productService.findAllAvailable(), HttpStatus.OK);
     }
     @GetMapping("/productId/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
@@ -77,5 +82,26 @@ public class ProductController {
         return new ResponseEntity<List<CategoryDto>>(categories,HttpStatus.OK);
     }
 
+    //admin
+    @PostMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> addProduct(@RequestBody Product product){
+        productService.saveProduct(product);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteProduct(@PathVariable int id){
+        productRepository.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @PutMapping()
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<?> editProduct(@RequestBody Product product){
+        productService.editProduct(product);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
 
 }

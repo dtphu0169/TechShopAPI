@@ -20,6 +20,7 @@ import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.InvalidParameterException;
 import java.security.Principal;
 import java.util.List;
 
@@ -71,8 +72,13 @@ public class OrderController {
     //order
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest,Principal principal){
-        orderService.createOrder(orderRequest,principal);
-        return new ResponseEntity<>(HttpStatus.OK);
+        try{
+            orderService.createOrder(orderRequest,principal);
+            return new ResponseEntity<>(HttpStatus.OK);
+        }catch (InvalidParameterException e){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
     }
 
     @GetMapping("/history")
