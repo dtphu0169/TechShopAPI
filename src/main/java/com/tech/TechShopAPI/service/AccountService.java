@@ -2,7 +2,7 @@ package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.dto.AccountDto;
 import com.tech.TechShopAPI.model.Account;
-import org.springframework.http.ResponseEntity;
+import com.tech.TechShopAPI.payload.request.SignupRequest;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -19,4 +19,12 @@ public interface AccountService {
     AccountDto getInfo(Principal principal);
 
     void changepassword(Principal principal, String password);
+
+    Account register(SignupRequest signupRequest);
+
+    boolean checkToken(String token);
+
+    void forgetpassword(String email);
+
+    String verifyResetPassword(String token);
 }

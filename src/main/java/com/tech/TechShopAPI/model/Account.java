@@ -26,6 +26,7 @@ public class Account {
     private boolean active;
     private String password;
     private Date registerDate;
+    private String token;
 
 //    @OneToMany(targetEntity = Bill.class,cascade = CascadeType.ALL)
 //    @JoinColumn(name = "accountId",referencedColumnName = "id")

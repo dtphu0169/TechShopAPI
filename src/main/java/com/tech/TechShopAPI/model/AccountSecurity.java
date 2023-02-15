@@ -48,7 +48,7 @@ public class AccountSecurity implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return account.isActive();
     }
 
     public Account getAccount() {

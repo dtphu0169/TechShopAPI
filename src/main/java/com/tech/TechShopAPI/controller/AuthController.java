@@ -7,6 +7,7 @@ import com.tech.TechShopAPI.payload.request.SignupRequest;
 import com.tech.TechShopAPI.payload.response.JwtResponse;
 import com.tech.TechShopAPI.repository.AccountRepository;
 import com.tech.TechShopAPI.service.AccountService;
+import com.tech.TechShopAPI.service.SendmailService;
 import com.tech.TechShopAPI.service.TokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -31,6 +32,8 @@ public class AuthController {
     @Autowired
     TokenService tokenService;
     @Autowired
+    SendmailService sendmailService;
+    @Autowired
     PasswordEncoder encoder;
     @Autowired
     AuthenticationManager authenticationManager;
@@ -41,7 +44,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest){
-        try{
+
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
@@ -58,33 +61,54 @@ public class AuthController {
             return new ResponseEntity<JwtResponse>(response,HttpStatus.OK);
 
 //            return new ResponseEntity<String>("response",HttpStatus.OK);
-        } catch (Exception e){
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+
     }
 
+    @RequestMapping(value = "/forgetpassword/{email}")
+    public ResponseEntity<?> forgetpassword(@PathVariable String email){
+        accountService.forgetpassword(email);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @RequestMapping(value= "/resetpassword/{token}")
+    public String resetpassword(@PathVariable String token){
+        String pass;
+        if ((pass = accountService.verifyResetPassword(token)) == null ){
+            return "Your verification code has been used or incorrect !!";
+        }
+        return "Your Email Password is: "+ pass;
+    }
+
+
+    //register
     @PostMapping("/signup")
     public ResponseEntity<?> Register(@RequestBody SignupRequest signupRequest){
         if (accountService.isEmailhasAccount(signupRequest.getEmail())){
             return new ResponseEntity<String>("Email registed",HttpStatus.BAD_REQUEST);
         }
+        Account account = accountService.register(signupRequest);
 
-        Account account = new Account();
-        account.setUserName(signupRequest.getUserName());
-        account.setEmail(signupRequest.getEmail());
-        account.setPassword(encoder.encode(signupRequest.getPassword()));
-        account.setPhone(signupRequest.getPhone());
-        account.setRole("ROLE_USER");
-        account.setActive(false);
-
-        java.sql.Date now = new Date(System.currentTimeMillis());
-        account.setRegisterDate(now);
-
-        accountRepository.save(account);
         return new ResponseEntity<Account>(account,HttpStatus.OK);
 
     }
+    @RequestMapping(value = "/sendemail")
+    public String sendEmail() {
+        if (sendmailService.sendmail("dtphunguyen1332c@gmail.com","test send mail","this is msg to test")){
+            return "Email sent successfully";
+        }
+        return "Email sent fail";
+    }
 
+    @RequestMapping(value = "/verify/{token}")
+    public String verifyToken(@PathVariable String token){
+        if (accountService.checkToken(token)){
+            return "your account has been active, \n Login now!!";
+        }
+        return "Your verification code has been used or incorrect !!";
+    }
+
+
+
+    //test
     @PostMapping("/token")
     public String token(Authentication authentication){
         log.debug("Token requested for user: '{}'",authentication.getName());
@@ -97,4 +121,6 @@ public class AuthController {
         boolean hasAccount = accountService.isEmailhasAccount(signupRequest.getEmail());
         return new ResponseEntity<Boolean>(hasAccount,HttpStatus.OK);
     }
+
+
 }
