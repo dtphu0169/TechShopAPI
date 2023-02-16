@@ -5,6 +5,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -22,8 +24,20 @@ public class Product {
     private boolean active;
     private int category_id;
     private int price;
-    @Column(nullable = true)
-    private Integer label_id;
+
+    @ManyToOne(targetEntity = Label.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "label_id",referencedColumnName = "id")
+//    @Column(nullable = true)
+    private Label label;
+
     private int quantity;
     private String decription;
+
+    @OneToMany(targetEntity = Image.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "productId",referencedColumnName = "id")
+    List<Image> images ;
+
+    @OneToMany(targetEntity = Feedback.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "productId",referencedColumnName = "id")
+    List<Feedback> feedbacks ;
 }

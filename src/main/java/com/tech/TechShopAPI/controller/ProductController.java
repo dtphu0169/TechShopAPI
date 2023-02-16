@@ -1,6 +1,7 @@
 package com.tech.TechShopAPI.controller;
 
 import com.tech.TechShopAPI.dto.CategoryDto;
+import com.tech.TechShopAPI.dto.FeedbackDto;
 import com.tech.TechShopAPI.model.Category;
 import com.tech.TechShopAPI.model.Label;
 import com.tech.TechShopAPI.model.Product;
@@ -9,6 +10,7 @@ import com.tech.TechShopAPI.repository.LabelRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
 import com.tech.TechShopAPI.service.CategoryService;
 import com.tech.TechShopAPI.service.CategoryServiceImpl;
+import com.tech.TechShopAPI.service.FeedbackService;
 import com.tech.TechShopAPI.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +30,8 @@ public class ProductController {
     CategoryService categoryService;
     @Autowired
     ProductService productService;
+    @Autowired
+    FeedbackService feedbackService;
 
     @Autowired
     LabelRepository labelRepository;
@@ -81,6 +86,14 @@ public class ProductController {
         }
         return new ResponseEntity<List<CategoryDto>>(categories,HttpStatus.OK);
     }
+
+    @PostMapping("/feedback")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<FeedbackDto> addFeedback(Principal principal, @RequestBody FeedbackDto feedbackDto){
+        feedbackService.save(principal,feedbackDto);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
     //admin
     @PostMapping

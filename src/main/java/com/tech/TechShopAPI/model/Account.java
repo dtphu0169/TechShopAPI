@@ -31,4 +31,8 @@ public class Account {
 //    @OneToMany(targetEntity = Bill.class,cascade = CascadeType.ALL)
 //    @JoinColumn(name = "accountId",referencedColumnName = "id")
 //    private List<Bill> bills;
+
+    @OneToMany(targetEntity = Address.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "accountId",referencedColumnName = "id")
+    List<Address> addressList;
 }

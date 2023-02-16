@@ -1,8 +1,12 @@
 package com.tech.TechShopAPI.controller;
 
 import com.tech.TechShopAPI.dto.AccountDto;
+import com.tech.TechShopAPI.dto.AddressDto;
 import com.tech.TechShopAPI.model.Account;
+import com.tech.TechShopAPI.model.Address;
 import com.tech.TechShopAPI.service.AccountService;
+import com.tech.TechShopAPI.service.AddressService;
+import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +26,8 @@ import java.util.List;
 public class AccountController {
     @Autowired
     AccountService accountService;
+    @Autowired
+    AddressService addressService;
 
     // test api role
 //    @PreAuthorize("hasRole('USER')") // các đường dẫn chưa đề cập trong sẽ được authenticated nên không cần role user
@@ -76,6 +82,32 @@ public class AccountController {
         accountService.changepassword(principal,password);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    @PostMapping("/address")
+    public ResponseEntity<?> addAddress(Principal principal,@RequestBody AddressDto addressDto){
+        Address address = addressService.save(principal,addressDto);
+        return new ResponseEntity<Address>(address,HttpStatus.OK);
+    }
+    @DeleteMapping("/address/{id}")
+    public ResponseEntity<?> deleteAddress(Principal principal,@PathVariable int id)  {
+        try{
+            addressService.delete(principal,id);
+        }catch (AuthenticationException e){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PutMapping("/address")
+    public ResponseEntity<?> editAddress(Principal principal,@RequestBody AddressDto addressDto){
+        try{
+            Address address = addressService.edit(principal,addressDto);
+            return new ResponseEntity<Address>(address,HttpStatus.OK);
+        }catch (AuthenticationException e){
+            return new ResponseEntity<>(HttpStatus.FORBIDDEN);
+        }
+
+    }
+
 //
 //    @GetMapping("/getAll")
 //    List<Account> getAccounts(){

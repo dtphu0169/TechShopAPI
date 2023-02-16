@@ -3,6 +3,7 @@ package com.tech.TechShopAPI.dto;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.model.Cartproduct;
 import com.tech.TechShopAPI.model.Category;
+import com.tech.TechShopAPI.model.Feedback;
 
 public class Dtomapper {
     public static CategoryDto mapCategory(Category category){
@@ -29,6 +30,15 @@ public class Dtomapper {
         result.setRole(account.getRole());
         result.setRegisterDate(account.getRegisterDate());
         result.setUserName(account.getUserName());
+        return result;
+    }
+
+    public static FeedbackDto mapFeedback(Feedback feedback){
+        FeedbackDto result = new FeedbackDto();
+        result.setUserName(feedback.getAccount().getUserName());
+        result.setProductId(feedback.getProductId());
+        result.setComment(feedback.getComment());
+        result.setStar(feedback.getStar());
         return result;
     }
 }
