@@ -73,6 +73,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/product/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/demo/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/api/image/**")).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/api/account/users")).hasRole("ROLE_ADMIN")
                         .anyRequest().authenticated()
                 )

@@ -1,11 +1,15 @@
 package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.model.Account;
+import com.tech.TechShopAPI.model.Bill;
+import com.tech.TechShopAPI.model.Bill_detail;
 import org.springframework.stereotype.Component;
 
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.security.Principal;
+import java.util.List;
 import java.util.Properties;
 
 @Component
@@ -94,6 +98,19 @@ public class SendmailServiceImpl implements SendmailService{
 
 
         return sendmail(account.getEmail(),"Reset password TechShop account",msg);
+    }
+
+    @Override
+    public void sendOrderMail(Account account, Bill order, List<Bill_detail> billDetails) {
+        String msg  = "Dear "+ account.getUserName() +",\n"
+                + "Thank you to order in our shop:\n"
+//                + "this is your order info \n"
+//                + order.toString() + "\n"
+                + "Hope you enjoy with our product, \n "
+                + "Thank you,\n"
+                + "TechShop.";
+
+        sendmail(account.getEmail(),"Order Success",msg);
     }
 
 

@@ -29,6 +29,8 @@ public class OrderServiceImpl implements OrderService{
     @Autowired
     BillRepository billRepository;
     @Autowired
+    SendmailService sendmailService;
+    @Autowired
     Bill_detailRepository bill_detailRepository;
     @Autowired
     AccountRepository accountRepository;
@@ -103,6 +105,8 @@ public class OrderServiceImpl implements OrderService{
             detail.setBill(order);
             bill_detailRepository.save(detail);
         }
+
+        sendmailService.sendOrderMail(account,order,billDetails);
     }
 
     @Override
