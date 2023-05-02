@@ -2,21 +2,19 @@ package com.tech.TechShopAPI.controller;
 
 import com.tech.TechShopAPI.dto.CategoryDto;
 import com.tech.TechShopAPI.dto.FeedbackDto;
-import com.tech.TechShopAPI.model.Category;
 import com.tech.TechShopAPI.model.Label;
 import com.tech.TechShopAPI.model.Product;
+import com.tech.TechShopAPI.payload.response.PaginationResponse;
 import com.tech.TechShopAPI.repository.CategoryRepository;
 import com.tech.TechShopAPI.repository.LabelRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
 import com.tech.TechShopAPI.service.CategoryService;
-import com.tech.TechShopAPI.service.CategoryServiceImpl;
 import com.tech.TechShopAPI.service.FeedbackService;
 import com.tech.TechShopAPI.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -54,6 +52,14 @@ public class ProductController {
     public ResponseEntity<List<Product>> getAvailableProduct(){
         return new ResponseEntity<List<Product>>(productService.findAllAvailable(), HttpStatus.OK);
     }
+
+    @GetMapping("/pagin_products")
+    public ResponseEntity<PaginationResponse<Product>> getPaginProduct(@RequestParam(defaultValue = "1") Integer pageNo,
+                                                                       @RequestParam(defaultValue = "3") Integer pageSize,
+                                                                       @RequestParam(defaultValue = "id") String sortBy){
+        return new ResponseEntity<PaginationResponse<Product>>(productService.findAllWithPagination(pageNo,pageSize,sortBy), HttpStatus.OK);
+    }
+
     @GetMapping("/productId/{id}")
     public ResponseEntity<Product> getProduct(@PathVariable int id){
         Optional<Product> productdata = productRepository.findById(id);

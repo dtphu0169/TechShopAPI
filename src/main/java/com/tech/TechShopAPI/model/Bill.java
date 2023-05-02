@@ -7,7 +7,7 @@ import lombok.Setter;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -26,6 +26,7 @@ public class Bill {
     @ManyToOne(targetEntity = Account.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "accountId",referencedColumnName = "id")
     private Account account;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date datecreate;
     private int price;
     private int shipprice;

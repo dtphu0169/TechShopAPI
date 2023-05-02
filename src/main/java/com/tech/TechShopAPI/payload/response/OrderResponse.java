@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.persistence.CascadeType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Component

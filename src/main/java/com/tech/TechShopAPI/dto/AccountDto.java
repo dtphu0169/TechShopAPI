@@ -3,7 +3,7 @@ package com.tech.TechShopAPI.dto;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
-import java.sql.Date;
+import java.util.Date;
 
 @Getter
 @Setter

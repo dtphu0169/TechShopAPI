@@ -3,7 +3,7 @@ package com.tech.TechShopAPI.model;
 import lombok.*;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -25,6 +25,7 @@ public class Account {
     private String role;
     private boolean active;
     private String password;
+    @Temporal(TemporalType.TIMESTAMP)
     private Date registerDate;
     private String token;
 

@@ -1,6 +1,7 @@
 package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.model.Product;
+import com.tech.TechShopAPI.payload.response.PaginationResponse;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,4 +14,6 @@ public interface ProductService {
     void editProduct(Product product);
 
     List<Product> findAllAvailable();
+
+    PaginationResponse<Product> findAllWithPagination(Integer pageNo, Integer pageSize, String sortBy);
 }

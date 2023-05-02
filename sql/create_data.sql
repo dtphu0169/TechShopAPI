@@ -1,10 +1,10 @@
 -- account
 INSERT INTO Account
-VALUES(1,'admin','0000000000','admin@admin.com',"ROLE_ADMIN",1,'$2a$12$H3v6EAQJEQsjBQr9zKbtee/bcq4xohDhBIpx4et1dp.lFerwmH3x2','2022-12-05',null);
+VALUES(1,'admin','0000000000','admin@admin.com',"ROLE_ADMIN",1,'$2a$12$H3v6EAQJEQsjBQr9zKbtee/bcq4xohDhBIpx4et1dp.lFerwmH3x2','2022-12-05 14:35:05',null);
 INSERT INTO Account
 VALUES(12,'nam','0123458468','nam@gmail.com',"ROLE_USER",1,'$2a$12$3HCqxqyI2luk1T1IXJFK6O0mBcpGRCBwmB7dRvgnAkt.94eC.KQQy','2023-01-05',null);
 INSERT INTO Account
-VALUES(15,'binh',null,'binh123@gmail.com',"ROLE_USER",1,'$2a$12$oh7xsOqW0HI8KMAlDq7Xb.mVW8q4qGbc1ugGswzBzgWaBdna.D1WC','2022-12-05',null);
+VALUES(15,'binh',null,'binh123@gmail.com',"ROLE_USER",1,'$2a$12$oh7xsOqW0HI8KMAlDq7Xb.mVW8q4qGbc1ugGswzBzgWaBdna.D1WC','2022-12-05 07:47:15',null);
 
 -- address
 INSERT INTO `address` (`id`,`account_id`, `provine_city`, `dictrict`, `ward`, `detail`) VALUES
@@ -15,10 +15,10 @@ INSERT INTO `address` (`id`,`account_id`, `provine_city`, `dictrict`, `ward`, `d
 
 -- category
 INSERT INTO `category`(`id`,`name`,`image_path`) VALUES
-                                                     (1001,'flycam', 'https://i.ibb.co/9VXrByb/product1002-1.jpg'),
-                                                     (1002,'robot', 'https://i.ibb.co/Y36g0Sz/product1003-2.jpg'),
-                                                     (1003,'camera', 'https://i.ibb.co/sFmdZ7D/product1004-3.jpg'),
-                                                     (1004,'play station', 'https://i.ibb.co/sbzvFJX/product1005-3.jpg');
+                                                     (1001,'flycam', ''),
+                                                     (1002,'robot', ''),
+                                                     (1003,'camera', ''),
+                                                     (1004,'play station', '');
 
 -- label
 INSERT INTO `label`(`id`,`name`,`price_rate`) VALUES
