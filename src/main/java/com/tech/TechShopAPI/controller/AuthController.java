@@ -27,6 +27,7 @@ import java.util.Calendar;
 
 @RestController
 @RequestMapping("api/auth")
+@CrossOrigin(origins = "*")
 public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 

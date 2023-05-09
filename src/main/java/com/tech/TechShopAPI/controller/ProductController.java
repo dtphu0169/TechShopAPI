@@ -25,6 +25,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/product")
+@CrossOrigin(origins = "*")
 public class ProductController {
     @Autowired
     CategoryService categoryService;

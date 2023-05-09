@@ -23,6 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api/account")
+@CrossOrigin(origins = "*")
 public class AccountController {
     @Autowired
     AccountService accountService;

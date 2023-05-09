@@ -9,6 +9,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/demo")
+@CrossOrigin(origins = "*")
 public class DemoControlller {
     @GetMapping("/headers")
     public ResponseEntity<?> myEndpoint(@RequestHeader Map<String, String> headers) {
