@@ -14,13 +14,12 @@ import com.tech.TechShopAPI.repository.Bill_detailRepository;
 import com.tech.TechShopAPI.repository.ProductRepository;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.web.authentication.Http403ForbiddenEntryPoint;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.InvalidParameterException;
 import java.security.Principal;
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +51,8 @@ public class OrderServiceImpl implements OrderService{
             response.setStatus(bill.getStatus());
             response.setNote(bill.getNote());
 
-            List<Bill_detail> billDetails = bill_detailRepository.findByBillId(bill.getId());
+            List<Bill_detail> billDetails = bill.getBillDetails();
+//                    bill_detailRepository.findByBillId(bill.getId());
             List<OrderDetailResponse> detailResponses = new ArrayList<>();
             for (Bill_detail bd : billDetails){
                 OrderDetailResponse detailResponse = new OrderDetailResponse();
@@ -71,12 +71,12 @@ public class OrderServiceImpl implements OrderService{
     @Override
     public void createOrder(@RequestBody OrderRequest orderRequest, Principal principal)throws InvalidParameterException {
         Account account = accountRepository.getbyEmail(principal.getName()).get();
-        java.sql.Date now = new Date(System.currentTimeMillis());
+        Date now = new Date(System.currentTimeMillis());
         List<CartproductDto> details = orderRequest.getDetails();
         List<Bill_detail> billDetails = new ArrayList<>();
 
         for (CartproductDto dto: details) {
-            Product product = productRepository.findById(dto.getProductId()).get();
+            Product product = productRepository.findById(dto.getProduct().getId()).get();
             if (!product.isActive() || product.getQuantity() <= 0){
                 throw new InvalidParameterException();
             }

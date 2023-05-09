@@ -14,13 +14,14 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Component
 @Entity
-@Table(name = "address")
 public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @org.springframework.data.annotation.Id
     private int id;
-    private int accountId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accountId")
+    private Account account;
     private String provine_city;
     private String dictrict;
     private String ward;

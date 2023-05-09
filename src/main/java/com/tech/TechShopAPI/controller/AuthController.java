@@ -1,5 +1,6 @@
 package com.tech.TechShopAPI.controller;
 
+import com.tech.TechShopAPI.dto.AccountDto;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.model.AccountSecurity;
 import com.tech.TechShopAPI.payload.request.LoginRequest;
@@ -21,7 +22,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.Calendar;
 
 @RestController
@@ -85,9 +86,9 @@ public class AuthController {
         if (accountService.isEmailhasAccount(signupRequest.getEmail())){
             return new ResponseEntity<String>("Email registed",HttpStatus.BAD_REQUEST);
         }
-        Account account = accountService.register(signupRequest);
+        AccountDto account = accountService.register(signupRequest);
 
-        return new ResponseEntity<Account>(account,HttpStatus.OK);
+        return new ResponseEntity<AccountDto>(account,HttpStatus.OK);
 
     }
     @RequestMapping(value = "/sendemail")

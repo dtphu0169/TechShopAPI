@@ -12,7 +12,7 @@ import org.springframework.stereotype.Component;
 @ToString
 public class FeedbackDto {
     private String userName;
-    private int productId;
+    private String product;
     private String comment;
     private int star;
 }

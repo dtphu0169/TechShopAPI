@@ -6,10 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Getter
 @Setter
@@ -23,5 +21,8 @@ public class Label {
     @org.springframework.data.annotation.Id
     private int id;
     private String name;
+    @OneToMany(targetEntity = Product.class,cascade = CascadeType.ALL)
+    @JoinColumn(name = "label_id",referencedColumnName = "id")
+    List<Product> products ;
     private double price_rate;
 }

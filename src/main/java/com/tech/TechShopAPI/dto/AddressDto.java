@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 @Component
 @ToString
+@Builder
 public class AddressDto {
     private int id;
     private String provine_city;

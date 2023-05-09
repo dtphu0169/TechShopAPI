@@ -17,7 +17,11 @@ public interface ProductRepository extends JpaRepository<Product,Integer> {
     List<Product> searchByName(@Param("name") String name);
 
     @Query("select p from Product p " +
-            "where active = true and " +
-            "quantity >= 1")
+            "where p.active = true and " +
+            "p.quantity >= 1")
     List<Product> findAllAvailable();
+
+    @Query("select p from Product p " +
+            "where p.name like :name")
+    Optional<Product> findByName(String name);
 }

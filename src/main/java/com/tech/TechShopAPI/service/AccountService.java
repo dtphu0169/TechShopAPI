@@ -10,7 +10,7 @@ import java.util.List;
 
 @Service
 public interface AccountService {
-    List<Account> getAllAccount();
+    List<AccountDto> getAllAccount();
 
     String getEmailbyId(int id);
 
@@ -20,7 +20,7 @@ public interface AccountService {
 
     void changepassword(Principal principal, String password);
 
-    Account register(SignupRequest signupRequest);
+    AccountDto register(SignupRequest signupRequest);
 
     boolean checkToken(String token);
 

@@ -2,6 +2,7 @@ package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.dto.CategoryDto;
 import com.tech.TechShopAPI.dto.Dtomapper;
+import com.tech.TechShopAPI.dto.ProductDto;
 import com.tech.TechShopAPI.model.Category;
 import com.tech.TechShopAPI.model.CategorySpecifications;
 import com.tech.TechShopAPI.model.Product;
@@ -20,19 +21,15 @@ public class CategoryServiceImpl implements CategoryService{
     CategoryRepository categoryRepository;
 
     @Override
-    public List<Product> getProductByCategory(String categoryName) {
+    public List<ProductDto> getProductByCategory(String categoryName) {
         List<Product> products = new ArrayList<>();
         Specification<Category> specification = CategorySpecifications.hasCategoryNameLike(categoryName);
         Optional<Category> categorydata = categoryRepository.findbyName(categoryName);
         if (!categorydata.isEmpty()){
             Category category = categorydata.get();
             products = category.getProducts();
-            for (Product p: products
-                 ) {
-                System.out.println(p.getName());
-            }
         }
-        return products;
+        return Dtomapper.mapProductList(products);
     }
 
     @Override

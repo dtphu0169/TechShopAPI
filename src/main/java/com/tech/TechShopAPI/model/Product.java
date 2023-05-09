@@ -14,7 +14,8 @@ import java.util.List;
 @NoArgsConstructor
 @Component
 @Entity
-@Table(name = "product")
+@ToString
+@Builder
 public class Product {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -22,10 +23,12 @@ public class Product {
     private int id;
     private String name;
     private boolean active;
-    private int category_id;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "categoryId")
+    private Category category;
     private int price;
 
-    @ManyToOne(targetEntity = Label.class,cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "label_id",referencedColumnName = "id")
 //    @Column(nullable = true)
     private Label label;

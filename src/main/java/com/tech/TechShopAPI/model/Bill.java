@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Component
 @Entity
-@Table(name = "bill")
 public class Bill {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -36,7 +35,7 @@ public class Bill {
     private String status;
     private String note;
 
-//    @OneToMany(targetEntity = Bill_detail.class,cascade = CascadeType.ALL)
-//    @JoinColumn(name = "billId",referencedColumnName = "id")
-//    private List<Bill_detail> billDetails;
+    @OneToMany(targetEntity = Bill_detail.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "bill_id",referencedColumnName = "id")
+    private List<Bill_detail> billDetails;
 }

@@ -57,16 +57,18 @@ public class OrderController {
 
     //gio hang
     @GetMapping("/cartproducts")
-    public ResponseEntity<List<Cartproduct>> getcartproduct(Principal principal){
-        return new ResponseEntity<List<Cartproduct>>(cartproductService.getcartproduct(principal), HttpStatus.OK);
+    public ResponseEntity<List<CartproductDto>> getcartproduct(Principal principal){
+        return new ResponseEntity<List<CartproductDto>>(cartproductService.getcartproduct(principal), HttpStatus.OK);
     }
     @PostMapping("/cartproduct")
     public ResponseEntity<?> addProductCart(@RequestBody CartproductDto cartproductDto,Principal principal){
-        return new ResponseEntity<Cartproduct>(cartproductService.save(principal,cartproductDto),HttpStatus.OK);
+        cartproductService.save(principal,cartproductDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     @DeleteMapping("/cartproduct")
     public ResponseEntity<?> deleteProductCart(@RequestBody CartproductDto cartproductDto,Principal principal){
-        return new ResponseEntity<>(cartproductService.delete(principal,cartproductDto),HttpStatus.OK);
+        cartproductService.delete(principal,cartproductDto);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     //order

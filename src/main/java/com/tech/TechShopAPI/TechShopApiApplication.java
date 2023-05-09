@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.sql.Date;
+import java.util.Date;
 
 @EnableConfigurationProperties(RsaKeyProperties.class)
 @SpringBootApplication

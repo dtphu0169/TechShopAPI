@@ -47,13 +47,13 @@ public class AccountController {
 
     @GetMapping("/users")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<List<Account>> getAll(Principal principal){
+    public ResponseEntity<List<AccountDto>> getAll(Principal principal){
         try{
-            List<Account> list = accountService.getAllAccount();
+            List<AccountDto> list = accountService.getAllAccount();
             if (list.isEmpty()){
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT) ;
             }
-            return new ResponseEntity<List<Account>>(list, HttpStatus.OK) ;
+            return new ResponseEntity<List<AccountDto>>(list, HttpStatus.OK) ;
         } catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR) ;
         }
@@ -85,8 +85,8 @@ public class AccountController {
 
     @PostMapping("/address")
     public ResponseEntity<?> addAddress(Principal principal,@RequestBody AddressDto addressDto){
-        Address address = addressService.save(principal,addressDto);
-        return new ResponseEntity<Address>(address,HttpStatus.OK);
+        AddressDto address = addressService.save(principal,addressDto);
+        return new ResponseEntity<AddressDto>(address,HttpStatus.OK);
     }
     @DeleteMapping("/address/{id}")
     public ResponseEntity<?> deleteAddress(Principal principal,@PathVariable int id)  {
@@ -100,8 +100,8 @@ public class AccountController {
     @PutMapping("/address")
     public ResponseEntity<?> editAddress(Principal principal,@RequestBody AddressDto addressDto){
         try{
-            Address address = addressService.edit(principal,addressDto);
-            return new ResponseEntity<Address>(address,HttpStatus.OK);
+            AddressDto address = addressService.edit(principal,addressDto);
+            return new ResponseEntity<AddressDto>(address,HttpStatus.OK);
         }catch (AuthenticationException e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
         }

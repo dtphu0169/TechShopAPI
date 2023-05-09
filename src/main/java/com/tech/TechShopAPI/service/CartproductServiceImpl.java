@@ -1,6 +1,7 @@
 package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.dto.CartproductDto;
+import com.tech.TechShopAPI.dto.Dtomapper;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.model.Cartproduct;
 import com.tech.TechShopAPI.model.Product;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,16 +26,20 @@ public class CartproductServiceImpl implements CartproductService{
     ProductRepository productRepository;
 
     @Override
-    public List<Cartproduct> getcartproduct(Principal principal) {
-        List<Cartproduct> cartproductList = cartproductRepository.findAllByAccountId(principal.getName());
+    public List<CartproductDto> getcartproduct(Principal principal) {
+        List<CartproductDto> cartproductList = new ArrayList<>();
+        for (Cartproduct cartproduct : cartproductRepository.findAllByAccountId(principal.getName())){
+            CartproductDto dto = Dtomapper.mapCartproduct(cartproduct);
+            cartproductList.add(dto);
+        }
         return cartproductList;
     }
 
     @Override
     public Cartproduct save(Principal principal,CartproductDto cartproductDto) {
         Cartproduct cartproduct = new Cartproduct();
+        Product product = productRepository.findById(cartproductDto.getProduct().getId()).get();
         Account account = accountRepository.getbyEmail(principal.getName()).get();
-        Product product = productRepository.findById(cartproductDto.getProductId()).get();
 
         Optional<Cartproduct> productIncart = cartproductRepository.findInCart(product.getId(),account.getId());
         if (productIncart.isEmpty()){
@@ -52,7 +58,7 @@ public class CartproductServiceImpl implements CartproductService{
     @Override
     public boolean delete(Principal principal, CartproductDto cartproductDto) {
         Account account = accountRepository.getbyEmail(principal.getName()).get();
-        Cartproduct productIncart = cartproductRepository.findInCart(cartproductDto.getProductId(), account.getId()).get();
+        Cartproduct productIncart = cartproductRepository.findInCart(cartproductDto.getProduct().getId(), account.getId()).get();
         int quantity = (productIncart.getQuantity() - cartproductDto.getQuantity()) > 0 ?
                 (productIncart.getQuantity() - cartproductDto.getQuantity()) : 0;
         productIncart.setQuantity(quantity);

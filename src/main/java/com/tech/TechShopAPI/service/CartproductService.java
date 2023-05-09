@@ -9,7 +9,7 @@ import java.util.List;
 
 @Service
 public interface CartproductService {
-    List<Cartproduct> getcartproduct(Principal principal);
+    List<CartproductDto> getcartproduct(Principal principal);
 
     Cartproduct save(Principal principal,CartproductDto cartproductDto);
 

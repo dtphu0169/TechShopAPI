@@ -23,7 +23,7 @@ public class Category {
     @Column(nullable = true)
     private String image_path;
 
-    @OneToMany(targetEntity = Product.class,cascade = CascadeType.ALL)
-    @JoinColumn(name = "category_id",referencedColumnName = "id")
+    @OneToMany(targetEntity = Product.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId",referencedColumnName = "id")
     private List<Product> products;
 }

@@ -1,9 +1,6 @@
 package com.tech.TechShopAPI.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -14,7 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Component
 @Entity
-@Table(name = "feedback")
+@Builder
 public class Feedback {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -23,7 +20,9 @@ public class Feedback {
     @ManyToOne(targetEntity = Account.class,cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id",referencedColumnName = "id")
     private Account account;
-    private int productId;
+    @ManyToOne(targetEntity = Product.class,cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @JoinColumn(name = "productId",referencedColumnName = "id")
+    private Product product;
     private String comment;
     private int star;
 

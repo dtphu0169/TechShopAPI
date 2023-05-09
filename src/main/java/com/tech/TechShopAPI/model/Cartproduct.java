@@ -14,7 +14,6 @@ import javax.persistence.*;
 @AllArgsConstructor
 @Component
 @Entity
-@Table(name = "cartproduct")
 
 public class Cartproduct {
     @GeneratedValue(strategy = GenerationType.IDENTITY)

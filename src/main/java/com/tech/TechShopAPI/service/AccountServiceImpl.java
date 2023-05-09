@@ -10,10 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.security.Principal;
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Component
 public class AccountServiceImpl implements AccountService {
@@ -25,8 +22,13 @@ public class AccountServiceImpl implements AccountService {
     PasswordEncoder encoder;
 
     @Override
-    public List<Account> getAllAccount() {
-        return accountRepository.findAll();
+    public List<AccountDto> getAllAccount() {
+        List<AccountDto> list = new ArrayList<>();
+        for(Account account : accountRepository.findAll()){
+            AccountDto dto = Dtomapper.mapAccount(account);
+            list.add(dto);
+        }
+        return list;
     }
 
     @Override
@@ -58,7 +60,7 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public Account register(SignupRequest signupRequest) {
+    public AccountDto register(SignupRequest signupRequest) {
         Account account = new Account();
         account.setUserName(signupRequest.getUserName());
         account.setEmail(signupRequest.getEmail());
@@ -67,14 +69,15 @@ public class AccountServiceImpl implements AccountService {
         account.setRole("ROLE_USER");
         account.setActive(false);
 
-        java.sql.Date now = new Date(System.currentTimeMillis());
+        Date now = new Date(System.currentTimeMillis());
         account.setRegisterDate(now);
 
         String token = String.valueOf(UUID.randomUUID());
         account.setToken(token);
         sendmailService.sendVerificationEmail(account,"http://localhost:8080/api/auth/verify/"+token);
 
-        return accountRepository.save(account);
+        AccountDto dto = Dtomapper.mapAccount(accountRepository.save(account));
+        return dto;
     }
 
     @Override

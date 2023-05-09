@@ -1,9 +1,11 @@
 package com.tech.TechShopAPI.dto;
 
+import com.tech.TechShopAPI.model.Address;
 import lombok.*;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -11,6 +13,7 @@ import java.util.Date;
 @AllArgsConstructor
 @Component
 @ToString
+@Builder
 public class AccountDto {
     private int id;
     private String userName;
@@ -19,4 +22,5 @@ public class AccountDto {
     private String role;
     private boolean active;
     private Date registerDate;
+    private List<AddressDto> addressList;
 }
