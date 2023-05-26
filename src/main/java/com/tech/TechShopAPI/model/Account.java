@@ -28,6 +28,9 @@ public class Account {
     private Date registerDate;
     private String token;
 
+//    @Enumerated(EnumType.STRING)
+//    private AuthenticationProvider authProvider;
+
 //    @OneToMany(targetEntity = Bill.class,cascade = CascadeType.ALL)
 //    @JoinColumn(name = "accountId",referencedColumnName = "id")
 //    private List<Bill> bills;

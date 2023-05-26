@@ -41,7 +41,7 @@ VALUES
     ,'PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức "đậm chất Sony" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai.');
 
 -- image
-INSERT INTO `techshopdb`.`image`
+INSERT INTO `image`
 (`id`,`product_id`,`url`)
 VALUES
     (10011,1001,'https://i.ibb.co/rZ8ysQq/product1001-1.jpg'),
@@ -65,26 +65,26 @@ VALUES
     (10054,1005,'https://i.ibb.co/j66p1Zh/product1005-4.jpg');
 
 -- cartproduct
-INSERT INTO `techshopdb`.`cartproduct`
+INSERT INTO `cartproduct`
 (`id`,`account_id`,`product_id`,`quantity`) VALUES
                                                 (1001,12,1002,1),
                                                 (1002,12,1004,2);
 
 -- feedback
-INSERT INTO `techshopdb`.`feedback`
+INSERT INTO `feedback`
 (`id`,`account_id`,`product_id`,`comment`,`star`)VALUES
     (1001,12,1005,'máy chơi game xịn',5);
 
 -- bill
-INSERT INTO `techshopdb`.`bill`
-(`id`,`account_id`,`datecreate`,`price`,`shipprice`,`address`,`phone`,`paid`,`status`,`note`) VALUES
-                                                                                                  (1001,12,'2022-12-15',14200000,50000,'Phường linh đông,thủ đức,TP HCM','0123458468',1,'đang đóng gói',
-                                                                                                   ''),
-                                                                                                  (1002,15,'2022-12-18',79200000,70000,'Phường linh trung,thủ đức,TP HCM','484315184',0,'đã nhận',
-                                                                                                   'gửi vào buổi trưa');
+INSERT INTO `bill`
+(`id`,`account_id`,`datecreate`,`price`,`shipprice`,`address`,`phone`,`paid`,`status`,`transaction_no`,`note`) VALUES
+                                                                                                                   (1001,12,'2022-12-15',14200000,50000,'Phường linh đông,thủ đức,TP HCM','0123458468',1,'đang đóng gói',null,
+                                                                                                                    ''),
+                                                                                                                   (1002,15,'2022-12-18',79200000,70000,'Phường linh trung,thủ đức,TP HCM','484315184',0,'đã nhận',null,
+                                                                                                                    'gửi vào buổi trưa');
 
 -- bill_detail
-INSERT INTO `techshopdb`.`bill_detail`
+INSERT INTO `bill_detail`
 (`id`,`bill_id`,`product_id`,`quantity`,`unit_price`)VALUES
                                                          (1001,1001,1005,1,14200000),
                                                          (1002,1002,1005,1,14200000),

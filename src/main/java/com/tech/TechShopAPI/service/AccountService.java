@@ -27,4 +27,6 @@ public interface AccountService {
     void forgetpassword(String email);
 
     String verifyResetPassword(String token);
+
+    Account getByEmail(String email);
 }

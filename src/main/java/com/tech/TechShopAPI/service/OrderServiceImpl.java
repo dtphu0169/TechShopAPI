@@ -1,6 +1,7 @@
 package com.tech.TechShopAPI.service;
 
 import com.tech.TechShopAPI.dto.CartproductDto;
+import com.tech.TechShopAPI.payload.response.EntityResponse;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.model.Bill;
 import com.tech.TechShopAPI.model.Bill_detail;
@@ -22,6 +23,7 @@ import java.security.Principal;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class OrderServiceImpl implements OrderService{
@@ -69,7 +71,10 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void createOrder(@RequestBody OrderRequest orderRequest, Principal principal)throws InvalidParameterException {
+    public OrderResponse createOrder(@RequestBody OrderRequest orderRequest, Principal principal,boolean prepaid)throws InvalidParameterException {
+        String status = "đang đóng gói";
+        if (prepaid) status = "đang chờ thanh toán";
+
         Account account = accountRepository.getbyEmail(principal.getName()).get();
         Date now = new Date(System.currentTimeMillis());
         List<CartproductDto> details = orderRequest.getDetails();
@@ -96,17 +101,42 @@ public class OrderServiceImpl implements OrderService{
         order.setAddress(orderRequest.getAddress());
         order.setPhone(orderRequest.getPhone());
         order.setPaid(orderRequest.isPaid());
-        order.setStatus("PACKING");
+        order.setStatus(status);
         order.setNote(orderRequest.getNote());
-//        order.setBillDetails(billDetails);
 
         order = billRepository.save(order);
+
         for (Bill_detail detail : billDetails) {
             detail.setBill(order);
             bill_detailRepository.save(detail);
         }
 
-        sendmailService.sendOrderMail(account,order,billDetails);
+        // crete response
+        OrderResponse response = new OrderResponse();
+        response.setId(order.getId());
+        response.setCustomerName(order.getAccount().getUserName());
+        response.setDatecreate(order.getDatecreate());
+        response.setPrice(order.getPrice());
+        response.setShipprice(order.getShipprice());
+        response.setAddress(order.getAddress());
+        response.setPhone(order.getPhone());
+        response.setPaid(order.isPaid());
+        response.setStatus(order.getStatus());
+        response.setNote(order.getNote());
+
+        List<OrderDetailResponse> detailResponses = new ArrayList<>();
+        for (Bill_detail bd : billDetails){
+            OrderDetailResponse detailResponse = new OrderDetailResponse();
+            detailResponse.setQuantity(bd.getQuantity());
+            detailResponse.setProductName(bd.getProduct().getName());
+            detailResponse.setUnit_price(bd.getProduct().getPrice());
+            detailResponses.add(detailResponse);
+        }
+        response.setBillDetails(detailResponses);
+
+//        sendmailService.sendOrderMail(account,order,billDetails);
+
+        return response;
     }
 
     @Override
@@ -145,7 +175,7 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public OrderResponse getById(int id, Principal principal) throws AuthenticationException {
+    public OrderResponse getById(long id, Principal principal) throws AuthenticationException {
 
         Account account = accountRepository.getbyEmail(principal.getName()).get();
         Bill bill = billRepository.findById(id).get();
@@ -194,9 +224,31 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public void editOrder(int id, String status) {
+    public void editOrder(long id, String status) {
         Bill bill = billRepository.findById(id).get();
         bill.setStatus(status);
         billRepository.save(bill);
+    }
+
+    @Override
+    public Bill findOrderByAccountIdAndOrderId(int accountId, long orderId) {
+        Optional<Bill> billData = billRepository.findOrderByAccountIdAndOrderId(accountId,orderId);
+        if (billData.isEmpty()){
+            return null;
+        }
+
+        return billData.get();
+    }
+
+    @Override
+    public EntityResponse updatePaidOrder(Bill bill) {
+        bill.setPaid(true);
+        bill.setStatus("đang đóng gói");
+        billRepository.save(bill);
+        EntityResponse result = new EntityResponse();
+        result.setOrderId(bill.getId());
+        result.setAmount(bill.getPrice());
+        result.setDescription("Đơn hàng đã được thanh toán ");
+        return result;
     }
 }

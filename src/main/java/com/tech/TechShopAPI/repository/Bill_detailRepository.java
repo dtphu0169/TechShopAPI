@@ -10,9 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface Bill_detailRepository extends JpaRepository<Bill_detail,Integer> {
+public interface Bill_detailRepository extends JpaRepository<Bill_detail,Long> {
     @Query("select bd from Bill_detail bd " +
             "inner join bd.bill b " +
             "where b.id = :id")
-    List<Bill_detail> findByBillId(@Param("id") int id);
+    List<Bill_detail> findByBillId(@Param("id") long id);
 }

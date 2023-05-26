@@ -9,14 +9,12 @@ import com.tech.TechShopAPI.payload.response.OrderResponse;
 import com.tech.TechShopAPI.repository.BillRepository;
 import com.tech.TechShopAPI.repository.Bill_detailRepository;
 import com.tech.TechShopAPI.repository.CartproductRepository;
-import com.tech.TechShopAPI.repository.CategoryRepository;
 import com.tech.TechShopAPI.service.CartproductService;
 import com.tech.TechShopAPI.service.OrderService;
 import org.apache.tomcat.websocket.AuthenticationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,7 +74,7 @@ public class OrderController {
     @PostMapping
     public ResponseEntity<?> createOrder(@RequestBody OrderRequest orderRequest,Principal principal){
         try{
-            orderService.createOrder(orderRequest,principal);
+            orderService.createOrder(orderRequest,principal,false);
             return new ResponseEntity<>(HttpStatus.OK);
         }catch (InvalidParameterException e){
             return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -127,7 +125,7 @@ public class OrderController {
 
     @PutMapping("/{id}/{status}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public ResponseEntity<?> editOrder(@PathVariable int id,@PathVariable String status){
+    public ResponseEntity<?> editOrder(@PathVariable long id,@PathVariable String status){
         orderService.editOrder(id,status);
         return new ResponseEntity<>(HttpStatus.OK);
     }

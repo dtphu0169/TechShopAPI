@@ -20,7 +20,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class OrderResponse {
-    private int id;
+    private long id;
     private String customerName;
     private Date datecreate;
     private int price;

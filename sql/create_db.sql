@@ -85,6 +85,7 @@ create table bill(
                      phone nvarchar(11) not null,
                      paid bool not null,
                      status nvarchar(225) not null,
+                     transaction_no nvarchar(225) null,
                      note nvarchar(1000) null,
                      constraint fk_bi foreign key(account_id)references account(id)
 );

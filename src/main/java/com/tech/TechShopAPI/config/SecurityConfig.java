@@ -35,19 +35,16 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.JwtGrantedAuthoritiesConverter;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
-import org.springframework.util.StringUtils;
-import org.springframework.web.filter.OncePerRequestFilter;
-
-import java.util.Collection;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Configuration
 @EnableMethodSecurity
@@ -71,12 +68,15 @@ public class SecurityConfig {
         http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
+                        .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/payment/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/product/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/demo/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/image/**")).permitAll()
 //                        .requestMatchers(new AntPathRequestMatcher("/api/account/users")).hasRole("ROLE_ADMIN")
                         .anyRequest().authenticated()
+
                 )
                 .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .userDetailsService(myUserDetailsService)
@@ -84,7 +84,13 @@ public class SecurityConfig {
 //                .addFilterBefore(authFilter, JwtAuthenticationFilter.class)
 //                .authenticationProvider(authenticationProvider())
                 .headers(headers -> headers.frameOptions().sameOrigin())
-                .httpBasic(Customizer.withDefaults());
+                .httpBasic(Customizer.withDefaults())
+//                .oauth2Login(Customizer.withDefaults());
+                .oauth2Login()
+                .defaultSuccessUrl("/")
+                .failureUrl("/login?error=true")
+                .and()
+                .oauth2Client();
 
         http.oauth2ResourceServer()
                 .jwt()
@@ -107,6 +113,7 @@ public class SecurityConfig {
 //                        return authorities;
 //                    }
 //                });
+
         return http.build();
     }
 
@@ -198,5 +205,26 @@ public class SecurityConfig {
 //        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
 //        converter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter();
 //        return converter;
+//    }
+
+    //google login
+//    @Bean
+//    public ClientRegistrationRepository clientRegistrationRepository() {
+//        return new InMemoryClientRegistrationRepository(googleClientRegistration());
+//    }
+
+//    private ClientRegistration googleClientRegistration() {
+//        return ClientRegistration.withRegistrationId("google")
+//                .clientId("369059669510-dmfpbgs8nm110bpojvajkm8neqi28vcc.apps.googleusercontent.com")
+//                .clientSecret("369059669510-dmfpbgs8nm110bpojvajkm8neqi28vcc.apps.googleusercontent.com")
+//                .scope("openid", "profile", "email")
+//                .redirectUriTemplate("http://localhost:8080/login/oauth2/code/{registrationId}")
+//                .authorizationUri("https://accounts.google.com/o/oauth2/v2/auth")
+//                .tokenUri("https://www.googleapis.com/oauth2/v4/token")
+//                .userInfoUri("https://www.googleapis.com/oauth2/v3/userinfo")
+//                .userNameAttributeName(IdTokenClaimNames.SUB)
+//                .jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")
+//                .clientName("Google")
+//                .build();
 //    }
 }

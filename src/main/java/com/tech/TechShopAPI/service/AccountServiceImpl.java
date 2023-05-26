@@ -124,5 +124,14 @@ public class AccountServiceImpl implements AccountService {
         return pass;
     }
 
+    @Override
+    public Account getByEmail(String email) {
+        Optional<Account> accountOptional = accountRepository.getbyEmail(email);
+        if (accountOptional.isEmpty()){
+            return null;
+        }
+        return accountOptional.get();
+    }
+
 
 }
