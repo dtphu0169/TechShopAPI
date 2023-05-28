@@ -65,12 +65,13 @@ public class SecurityConfig {
 
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.cors().and().csrf().disable()
+        http.csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/payment/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
+                                .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/product/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/demo/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/image/**")).permitAll()
