@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 @RestController
 @RequestMapping("api/auth")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 

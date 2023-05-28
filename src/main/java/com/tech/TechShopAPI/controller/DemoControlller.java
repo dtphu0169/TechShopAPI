@@ -10,7 +10,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/demo")
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DemoControlller {
     @GetMapping("/headers")
     public ResponseEntity<?> myEndpoint(@RequestHeader Map<String, String> headers) {

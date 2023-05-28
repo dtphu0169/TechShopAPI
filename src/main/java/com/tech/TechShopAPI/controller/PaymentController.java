@@ -23,6 +23,7 @@ import java.util.*;
 
 @RestController
 @RequestMapping("/payment")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PaymentController {
     @Autowired
     AccountService accountService;
