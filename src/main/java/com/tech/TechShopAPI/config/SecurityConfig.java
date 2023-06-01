@@ -35,9 +35,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.client.registration.ClientRegistration;
-import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
-import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
 import org.springframework.security.oauth2.core.oidc.IdTokenClaimNames;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
@@ -68,9 +65,8 @@ public class SecurityConfig {
         http.cors().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(new AntPathRequestMatcher("/login/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/payment/**")).permitAll()
-                                .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
+//                                .requestMatchers(new AntPathRequestMatcher("/oauth2/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/auth/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/api/product/**")).permitAll()
                                 .requestMatchers(new AntPathRequestMatcher("/demo/**")).permitAll()
@@ -85,13 +81,13 @@ public class SecurityConfig {
 //                .addFilterBefore(authFilter, JwtAuthenticationFilter.class)
 //                .authenticationProvider(authenticationProvider())
                 .headers(headers -> headers.frameOptions().sameOrigin())
-                .httpBasic(Customizer.withDefaults())
+                .httpBasic(Customizer.withDefaults());
 //                .oauth2Login(Customizer.withDefaults());
-                .oauth2Login()
-                .defaultSuccessUrl("/")
-                .failureUrl("/login?error=true")
-                .and()
-                .oauth2Client();
+//                .oauth2Login()
+//                .defaultSuccessUrl("/")
+//                .failureUrl("/login?error=true")
+//                .and()
+//                .oauth2Client();
 
         http.oauth2ResourceServer()
                 .jwt()
