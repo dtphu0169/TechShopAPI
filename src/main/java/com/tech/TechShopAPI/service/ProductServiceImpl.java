@@ -17,6 +17,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,7 +69,9 @@ public class ProductServiceImpl implements ProductService{
 
     @Override
     public List<ProductDto> findAllAvailable() {
-        return Dtomapper.mapProductList(productRepository.findAllAvailable());
+        List<ProductDto> list = Dtomapper.mapProductList(productRepository.findAllAvailable());
+        Collections.reverse(list);
+        return list;
     }
 
     @Override

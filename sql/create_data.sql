@@ -15,10 +15,10 @@ INSERT INTO `address` (`id`,`account_id`, `provine_city`, `dictrict`, `ward`, `d
 
 -- category
 INSERT INTO `category`(`id`,`name`,`image_path`) VALUES
-                                                     (1001,'flycam', ''),
-                                                     (1002,'robot', ''),
-                                                     (1003,'camera', ''),
-                                                     (1004,'play station', '');
+                                                     (1001,'flycam', 'https://i.ibb.co/LDwhn8F/product1007-1.jpg'),
+                                                     (1002,'robot', 'https://i.ibb.co/VNsQGYV/product1008-1.jpg'),
+                                                     (1003,'Máy ảnh', 'https://i.ibb.co/sFmdZ7D/product1004-3.jpg'),
+                                                     (1004,'play station', 'https://i.ibb.co/1Z1RN8D/product1005-2.jpg');
 
 -- label
 INSERT INTO `label`(`id`,`name`,`price_rate`) VALUES
@@ -38,13 +38,27 @@ VALUES
     (1004,'GoPro Hero 11 Black Combo Vlog',true,1003,21200000,1001,10
     ,'GoPro Hero 11 Black trang bị các tính năng kỹ thuật số cải tiến, cảm biến ảnh mới 27MP và kết nối Wi-Fi, mang đến khả năng quay phim ở góc nhìn thứ nhất kịch tính với độ phân giải đến 5.3K60.'),
     (1005,'PlayStation 5 / PS5 Standard Edition',true,1004,14200000,null,10
-    ,'PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức "đậm chất Sony" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai.');
+    ,'PS5 sở hữu thiết kế rất mềm mại với những đường cong ấn tượng, không vuông vức "đậm chất Sony" như PS4, hay Sony Xperia...bắt mắt với tông màu trắng chủ đạo kết hợp màu đen bên trong thân máy cùng đèn LED xanh dương mang lại cảm giác đây chính là thiết kế của tương lai.'),
+    (1006,'Flycam DJI Phantom 4 Pro V2.0',true,1001,38990000,null,10
+    ,'Trở lại đầy ấn tượng và mạnh mẽ, Phantom 4 Pro Version 2.0 vẫn kế thừa tất cả các tính năng tuyệt vời từ phiên bản trước đó nhưng được cải tiến nổi bật hơn nhằm phát triển bộ điều khiển và những kết nối nâng cao.'),
+   (1007,'DJI MG-1P',true,1001,23000000,null,10
+       ,'DJI MG-1P với những cải tiến mới, bộ điều khiển chuyên nghiệp, camera FPV góc rộng, hệ thống ba radar có độ chính xác cao, cùng với khả năng chống nhiễu và hiệu suất bay ổn định đã giúp MG-1P trở thành thiết bị hỗ trợ tối ưu cho lĩnh vực nông nghiệp hiện đại ngày nay.'),
+   (1008,'Robot giáo dục lập trình (P1030069)',true,1002,3990000,null,10
+       ,'Codey Rocky English Version của thương hiệu Makeblock là một robot lập trình cho giáo dục STEAM xây dựng các giáo trình học tập và tạo ra các sản phẩm phù hợp với các bậc từ tiểu học đến trung học về lập trình Scratch, Python,..'),
+   (1009,'DJI RoboMaster S1 Educational Robot',true,1002,15390000,null,10
+       ,'Không chỉ là con robot điều khiển từ xa chạy dưới đất tích hợp camera bình thường, RoboMaster S1 mà DJI vừa ra mắt còn là món đồ chơi để trẻ em có thể tiếp cận tới việc lập trình, tự động hoá thông qua việc tự code quá trình hoạt động của nó.'),
+   (1010,'Máy ảnh kỹ thuật số Sony ZV-E10 chính hãng',true,1003,19300000,null,10
+       ,'Mặc dù trình làng đầu năm 2020, nhưng cho tới hiện tại Sony ZV-E10 vẫn là dòng máy ảnh được cộng đồng nhiếp ảnh và streamer săn đón.'),
+   (1011,'Máy ảnh Canon EOS 2000D Kit EF-S18-55mm F3.5-5.6 III',true,1003,9900000,null,10
+       ,'Máy ảnh Canon 2000D là một chiếc máy ảnh DSLR có khả năng chụp ảnh linh hoạt và một bộ tính năng hữu ích. Nó có cảm biến APS-C 24,1 MP mới, độ nhạy sáng đạt ISO 100-6400. Ngoài ra, bạn có thể tạo ra những thước phim Full HD sống động với thiết bị này.'),
+   (1012,'Máy game PS4 Pro 1TB ',true,1004,7900000,null,10
+       ,'Máy game ps4 pro 1 Tb máy 98-99%, hack, bảo hành 3 tháng, có sẵn 15 thông dụng, khách có thể liên hệ để chọn game cài khi mua');
 
 -- image
 INSERT INTO `image`
 (`id`,`product_id`,`url`)
 VALUES
-    (10011,1001,'https://i.ibb.co/rZ8ysQq/product1001-1.jpg'),
+    (10011,1001,'https://i.ibb.co/JRnqXw7/product1001-1.jpg'),
     (10012,1001,'https://i.ibb.co/4pDWYNR/product1001-2.jpg'),
     (10013,1001,'https://i.ibb.co/cxWxcRX/product1001-3.jpg'),
     (10014,1001,'https://i.ibb.co/w4kL3n5/product1001-4.jpg'),
@@ -62,7 +76,35 @@ VALUES
     (10051,1005,'https://i.ibb.co/YcC8hJW/product1005-1.jpg'),
     (10052,1005,'https://i.ibb.co/1Z1RN8D/product1005-2.jpg'),
     (10053,1005,'https://i.ibb.co/sbzvFJX/product1005-3.jpg'),
-    (10054,1005,'https://i.ibb.co/j66p1Zh/product1005-4.jpg');
+    (10054,1005,'https://i.ibb.co/j66p1Zh/product1005-4.jpg'),
+    (10061,1006,'https://i.ibb.co/0jcTy84/product1006-1.jpg'),
+    (10062,1006,'https://i.ibb.co/pKbZYqV/product1006-2.jpg'),
+    (10063,1006,'https://i.ibb.co/YPcKHtN/product1006-3.jpg'),
+    (10064,1006,'https://i.ibb.co/zsJBWKF/product1006-4.jpg'),
+    (10065,1006,'https://i.ibb.co/YpMShqH/product1006-5.jpg'),
+    (10071,1007,'https://i.ibb.co/LDwhn8F/product1007-1.jpg'),
+    (10072,1007,'https://i.ibb.co/z7nZ8q9/product1007-2.jpg'),
+    (10073,1007,'https://i.ibb.co/5n7H3LR/product1007-3.jpg'),
+    (10074,1007,'https://i.ibb.co/QDQC67v/product1007-4.jpg'),
+    (10081,1008,'https://i.ibb.co/VNsQGYV/product1008-1.jpg'),
+    (10082,1008,'https://i.ibb.co/8sY4XNj/product1008-2.jpg'),
+    (10083,1008,'https://i.ibb.co/5TdNCQF/product1008-3.jpg'),
+    (10084,1008,'https://i.ibb.co/pJvwXVp/product1008-4.jpg'),
+    (10091,1009,'https://i.ibb.co/nMSB4dg/product1009-1.webp'),
+    (10092,1009,'https://i.ibb.co/Xkdd2ny/product1009-2.webp'),
+    (10093,1009,'https://i.ibb.co/hKNmrGM/product1009-3.webp'),
+    (10094,1009,'https://i.ibb.co/HHTt41y/product1009-4.webp'),
+    (10101,1010,'https://i.ibb.co/MsDR5zJ/product1010-1.webp'),
+    (10102,1010,'https://i.ibb.co/vJg6XGH/product1010-2.webp'),
+    (10103,1010,'https://i.ibb.co/4PW4VwD/product1010-3.webp'),
+    (10111,1011,'https://i.ibb.co/cDDWfGK/product1011-1.webp'),
+    (10112,1011,'https://i.ibb.co/sPVh0bK/product1011-2.webp'),
+    (10113,1011,'https://i.ibb.co/TR3dDBd/product1011-3.webp'),
+    (10114,1011,'https://i.ibb.co/K9LK6Vc/product1011-4.webp'),
+    (10121,1012,'https://i.ibb.co/8gNR0Z9/product1012-1.webp'),
+    (10122,1012,'https://i.ibb.co/B6nLvhZ/product1012-2.webp'),
+    (10123,1012,'https://i.ibb.co/xsgY8nP/product1012-3.webp');
+
 
 -- cartproduct
 INSERT INTO `cartproduct`
