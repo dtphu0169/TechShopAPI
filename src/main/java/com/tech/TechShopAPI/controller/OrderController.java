@@ -69,6 +69,10 @@ public class OrderController {
         cartproductService.delete(principal,cartproductDto);
         return new ResponseEntity<>(HttpStatus.OK);
     }
+    @PutMapping("/cartproduct")
+    public ResponseEntity<?> updateQuantityCartProduct(@RequestBody CartproductDto cartproductDto,Principal principal){
+       return new ResponseEntity<List<CartproductDto>>(cartproductService.updateCartproduct(cartproductDto,principal), HttpStatus.OK);
+    }
 
     //order
     @PostMapping

@@ -65,4 +65,13 @@ public class CartproductServiceImpl implements CartproductService{
         cartproductRepository.save(productIncart);
         return true;
     }
+
+    @Override
+    public List<CartproductDto> updateCartproduct(CartproductDto cartproductDto, Principal principal) {
+        Account account = accountRepository.getbyEmail(principal.getName()).get();
+        Cartproduct productIncart = cartproductRepository.findInCart(cartproductDto.getProduct().getId(), account.getId()).get();
+        productIncart.setQuantity(cartproductDto.getQuantity());
+        cartproductRepository.save(productIncart);
+        return getcartproduct(principal);
+    }
 }

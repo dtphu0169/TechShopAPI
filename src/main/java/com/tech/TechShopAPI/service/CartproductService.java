@@ -14,4 +14,6 @@ public interface CartproductService {
     Cartproduct save(Principal principal,CartproductDto cartproductDto);
 
     boolean delete(Principal principal, CartproductDto cartproductDto);
+
+    List<CartproductDto> updateCartproduct(CartproductDto cartproductDto, Principal principal);
 }
