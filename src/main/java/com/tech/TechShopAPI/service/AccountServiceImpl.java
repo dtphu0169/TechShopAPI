@@ -4,6 +4,7 @@ import com.tech.TechShopAPI.dto.AccountDto;
 import com.tech.TechShopAPI.dto.Dtomapper;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.payload.request.SignupRequest;
+import com.tech.TechShopAPI.payload.response.VerifyTokenResponse;
 import com.tech.TechShopAPI.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -74,23 +75,30 @@ public class AccountServiceImpl implements AccountService {
 
         String token = String.valueOf(UUID.randomUUID());
         account.setToken(token);
-        sendmailService.sendVerificationEmail(account,"http://localhost:8080/api/auth/verify/"+token);
+        sendmailService.sendVerificationEmail(account,"http://localhost:3000/verify/"+token);
 
         AccountDto dto = Dtomapper.mapAccount(accountRepository.save(account));
         return dto;
     }
 
     @Override
-    public boolean checkToken(String token) {
+    public VerifyTokenResponse checkToken(String token) {
         Optional<Account> accountOptional = accountRepository.findBytoken(token);
+        VerifyTokenResponse response = new VerifyTokenResponse();
         if (accountOptional.isEmpty()){
-            return false;
+            response.setStatus("Verification failed!");
+            response.setNote("Token đã được sử dung. "
+                    +"Vui lòng đăng nhập để tiếp tục!");
+            return response;
         }
         Account account = accountOptional.get();
         account.setActive(true);
         account.setToken(null);
         accountRepository.save(account);
-        return true;
+        response.setStatus("Verification successful!");
+        response.setNote("Xác minh tài khoản thành công! "+
+                "Vui lòng đăng nhập để tiếp tục!");
+        return response;
     }
 
     @Override

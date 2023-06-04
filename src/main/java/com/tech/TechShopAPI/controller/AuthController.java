@@ -6,6 +6,7 @@ import com.tech.TechShopAPI.model.AccountSecurity;
 import com.tech.TechShopAPI.payload.request.LoginRequest;
 import com.tech.TechShopAPI.payload.request.SignupRequest;
 import com.tech.TechShopAPI.payload.response.JwtResponse;
+import com.tech.TechShopAPI.payload.response.VerifyTokenResponse;
 import com.tech.TechShopAPI.repository.AccountRepository;
 import com.tech.TechShopAPI.service.AccountService;
 import com.tech.TechShopAPI.service.SendmailService;
@@ -101,11 +102,8 @@ public class AuthController {
     }
 
     @RequestMapping(value = "/verify/{token}")
-    public String verifyToken(@PathVariable String token){
-        if (accountService.checkToken(token)){
-            return "your account has been active, \n Login now!!";
-        }
-        return "Your verification code has been used or incorrect !!";
+    public ResponseEntity<?> verifyToken(@PathVariable String token){
+        return new ResponseEntity<VerifyTokenResponse>(accountService.checkToken(token),HttpStatus.OK);
     }
 
 

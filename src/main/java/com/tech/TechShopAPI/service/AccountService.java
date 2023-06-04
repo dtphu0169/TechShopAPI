@@ -3,6 +3,7 @@ package com.tech.TechShopAPI.service;
 import com.tech.TechShopAPI.dto.AccountDto;
 import com.tech.TechShopAPI.model.Account;
 import com.tech.TechShopAPI.payload.request.SignupRequest;
+import com.tech.TechShopAPI.payload.response.VerifyTokenResponse;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
@@ -22,7 +23,7 @@ public interface AccountService {
 
     AccountDto register(SignupRequest signupRequest);
 
-    boolean checkToken(String token);
+    VerifyTokenResponse checkToken(String token);
 
     void forgetpassword(String email);
 
