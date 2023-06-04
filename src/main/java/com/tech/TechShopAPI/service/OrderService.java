@@ -24,5 +24,5 @@ public interface OrderService {
 
     Bill findOrderByAccountIdAndOrderId(int accountId,long orderId);
 
-    EntityResponse updatePaidOrder(Bill bill);
+    OrderResponse updatePaidOrder(Bill bill);
 }

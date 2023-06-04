@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.security.InvalidParameterException;
 import java.security.Principal;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class OrderServiceImpl implements OrderService{
@@ -241,14 +238,15 @@ public class OrderServiceImpl implements OrderService{
     }
 
     @Override
-    public EntityResponse updatePaidOrder(Bill bill) {
+    public OrderResponse updatePaidOrder(Bill bill) {
         bill.setPaid(true);
         bill.setStatus("đang đóng gói");
         billRepository.save(bill);
-        EntityResponse result = new EntityResponse();
-        result.setOrderId(bill.getId());
-        result.setAmount(bill.getPrice());
-        result.setDescription("Đơn hàng đã được thanh toán ");
-        return result;
+//        EntityResponse result = new EntityResponse();
+//        result.setOrderId(bill.getId());
+//        result.setAmount(bill.getPrice());
+//        result.setDescription("Đơn hàng đã được thanh toán ");
+        List<OrderResponse> result = changebilltoResponse(Arrays.asList(bill));
+        return result.get(0);
     }
 }

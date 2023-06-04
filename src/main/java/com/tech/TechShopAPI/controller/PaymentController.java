@@ -119,6 +119,7 @@ public class PaymentController {
 
         return new ResponseEntity<>(result, HttpStatus.OK);
 }
+    //just for test
     @GetMapping("/return")
     public String Redirect(
             @RequestParam(value = "vnp_Amount", required = false) String amount,
