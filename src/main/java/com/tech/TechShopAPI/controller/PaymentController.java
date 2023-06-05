@@ -38,8 +38,8 @@ public class PaymentController {
     public ResponseEntity<?> createPayment(@RequestBody OrderRequest requestParams, Principal principal) throws UnsupportedEncodingException {
         OrderResponse orderResponse = orderService.createOrder(requestParams,principal,true);
 
-        int amount = requestParams.getPrice() * 100;
-
+        long amount =((long) requestParams.getPrice()) * 100;
+//        System.out.println(amount +" " + requestParams.getPrice());
         Map<String, String> vnp_Params = new HashMap<>();
         vnp_Params.put("vnp_Version", PaymentConfig.VERSIONVNPAY);
         vnp_Params.put("vnp_Command", PaymentConfig.COMMAND);
