@@ -20,7 +20,7 @@ public class PaymentConfig {
     public static final String TMNCODE = "E9IICQS6";
     public static final String CURRCODE = "VND";
     public static final String LOCALDEFAULT = "vn";
-    public static final String RETURNURL ="http://localhost:3000/detailPayment"; //"http://localhost:8080/payment/return";
+    public static final String RETURNURL ="http://localhost:3000/detailPayment/"; //"http://localhost:8080/payment/return";
     public static final String CHECKSUM = "QYLSQGPNGTPPQIKEXLAJJKXRPKQLXGGV";
     public static final String VNPAYURL = "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html";
     public static final String ORDERINFO = "Thanh toán đơn hàng";
